@@ -16,6 +16,16 @@ def main():
         print(f"❌ Main script not found: {main_script}")
         return False
     
+    # Check if required data files exist
+    utils_dir = project_root / "utils"
+    about_html = utils_dir / "about.html"
+    file_details_toml = utils_dir / "file_details.toml"
+    
+    if not about_html.exists():
+        print(f"⚠️  Warning: about.html not found at {about_html}")
+    if not file_details_toml.exists():
+        print(f"⚠️  Warning: file_details.toml not found at {file_details_toml}")
+    
     # Nuitka command
     cmd = [
         sys.executable, "-m", "nuitka",
@@ -24,17 +34,31 @@ def main():
         "--enable-plugin=pyside6",
         "--disable-console",
         
-        # Include data files
-        f"--include-data-files={project_root}/utils/about.html=utils/about.html",
-        f"--include-data-files={project_root}/utils/file_details.toml=utils/file_details.toml",
+        # Include data files only if they exist
+        f"--include-data-files={about_html}=utils/about.html",
+        f"--include-data-files={file_details_toml}=utils/file_details.toml",
+        
+        # Include entire utils directory to be safe
+        f"--include-data-dir={utils_dir}=utils",
         
         # Output settings
         "--output-dir=dist",
-        "--output-filename=ArborescenceASCII"
+        "--output-filename=ArborescenceASCII",
+        
+        # Performance optimizations
+        "--enable-plugin=anti-bloat",
+        "--disable-plugin=tk-inter"
     ]
     
     print("📄 Command:")
     print(" ".join(cmd))
+    print()
+    
+    # Show project structure
+    print("📁 Project structure:")
+    print(f"   Source: {main_script}")
+    print(f"   Utils: {utils_dir}")
+    print(f"   Output: {project_root}/dist/")
     print()
     
     # Run compilation
@@ -44,8 +68,18 @@ def main():
     if result.returncode == 0:
         print("✅ Compilation successful!")
         print(f"📦 Output: {project_root}/dist/")
+        
+        # Check if executable was created
+        dist_dir = project_root / "dist"
+        exe_files = list(dist_dir.glob("**/ArborescenceASCII*"))
+        if exe_files:
+            print(f"🎯 Executable: {exe_files[0]}")
     else:
         print("❌ Compilation failed!")
+        print("💡 Common fixes:")
+        print("   - Ensure Nuitka is installed: pip install nuitka")
+        print("   - Check that PySide6 is installed: pip install pyside6")
+        print("   - Verify all imports in your Python files")
     
     return result.returncode == 0
 

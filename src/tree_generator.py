@@ -1,10 +1,21 @@
 import os
+import sys
 import toml
 from datetime import datetime
 
 
 class TreeGenerator:
-	def __init__(self, toml_file_path="file_details.toml", max_filename_length=64):
+	def __init__(self, toml_file_path=None, max_filename_length=64):
+		# Set default path if none provided
+		if toml_file_path is None:
+			if getattr(sys, 'frozen', False):
+				# Running as compiled executable
+				base_path = os.path.dirname(sys.executable)
+			else:
+				# Running as script - go up from src to project root
+				base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+			toml_file_path = os.path.join(base_path, "utils", "file_details.toml")
+		
 		self.toml_file_path = toml_file_path
 		self.max_filename_length = max_filename_length
 		self.config = self.load_config()
@@ -190,7 +201,7 @@ class TreeGenerator:
 			filename_width = max(self.longest_display_name + 2, len(headers[0]) + 2)
 			
 			# Format metadata headers with proper spacing
-			metadata_headers = headers[1:]  # Exclude "NOM"
+			metadata_headers = headers[1:]  # Exclude "NAME"
 			column_widths = [12, 12, 20, 20, 20]
 			formatted_headers = []
 			
@@ -294,7 +305,7 @@ class TreeGenerator:
 
 
 # Convenience function for simple usage
-def generate_tree_structure(folder_path, toml_config_path="file_details.toml", max_filename_length=180):
+def generate_tree_structure(folder_path, toml_config_path=None, max_filename_length=64):
 	"""Simple function to generate tree structure"""
 	generator = TreeGenerator(toml_config_path, max_filename_length)
 	return generator.generate_tree(folder_path)

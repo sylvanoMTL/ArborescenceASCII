@@ -9,7 +9,7 @@ if getattr(sys, 'frozen', False):
 
 from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, 
                                QHBoxLayout, QWidget, QPushButton, QLabel, 
-                               QLineEdit, QFileDialog, QMessageBox, QTextEdit)
+                               QLineEdit, QFileDialog, QMessageBox, QTextEdit, QDialog)
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 
@@ -19,6 +19,7 @@ from filedetails import FileDetailsDialog
 from tree_generator import TreeGenerator
 from maxLengthDialog import maxLengthDialog
 
+
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -27,7 +28,10 @@ class MainWindow(QMainWindow):
 
         # Initialize input_folder attribute and tree generator
         self.input_folder = ""
-        self.tree_generator = TreeGenerator()
+        
+        # Get the correct path for file_details.toml
+        self.toml_path = self.get_resource_path("utils", "file_details.toml")
+        self.tree_generator = TreeGenerator(self.toml_path)
 
         # Configure preview text widget for proper formatting
         self.setup_preview_text()
@@ -48,6 +52,17 @@ class MainWindow(QMainWindow):
         self.ui.copy_btn.clicked.connect(self.copy_preview_text)
 
         self.ui.preview_text.setEnabled(True)
+
+    def get_resource_path(self, *path_parts):
+        """Get the correct path for resources, works for both script and compiled executable"""
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable
+            base_path = os.path.dirname(sys.executable)
+        else:
+            # Running as script - go up from src to project root
+            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        
+        return os.path.join(base_path, *path_parts)
 
     def setup_preview_text(self):
         """Configure preview text widget with monospaced font for proper alignment"""
@@ -161,8 +176,7 @@ class MainWindow(QMainWindow):
         dlg.exec()
 
     def show_details(self):
-        dlg = FileDetailsDialog("utils/file_details.toml")
-        # dlg.show()
+        dlg = FileDetailsDialog(self.toml_path)
         dlg.exec()
 
     def configure_filename_length(self):
@@ -172,8 +186,9 @@ class MainWindow(QMainWindow):
         # Use custom dialog
         dlg = maxLengthDialog(self, current_length)
         result = dlg.exec()
-        print(result)
-        if result == True:
+        
+        # Fix: Use proper dialog result comparison
+        if result == QDialog.Accepted:
             new_length = dlg.get_max_length()
             
             if new_length != current_length:
