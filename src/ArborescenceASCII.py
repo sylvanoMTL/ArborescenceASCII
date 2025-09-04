@@ -161,7 +161,7 @@ class MainWindow(QMainWindow):
         dlg.exec()
 
     def show_details(self):
-        dlg = FileDetailsDialog("file_details.toml")
+        dlg = FileDetailsDialog("utils/file_details.toml")
         # dlg.show()
         dlg.exec()
 

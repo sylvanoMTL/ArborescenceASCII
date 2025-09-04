@@ -1,13 +1,13 @@
 [common]
 Name = true
-Size = false
-Type = false
-DateCreated = false
-DateModified = false
-DateAccessed = false
+Size = true
+Type = true
+DateCreated = true
+DateModified = true
+DateAccessed = true
 
 [media]
-Dimensions = true
+Dimensions = false
 Width = false
 Height = false
 Duration = false

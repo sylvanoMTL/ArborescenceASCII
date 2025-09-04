@@ -19,7 +19,7 @@ class AboutDialog(QDialog, Ui_AboutDialog):
         #     content = f.read()
         # self.about_text.setPlainText(content)
 
-        with open("about.html", "r", encoding="utf-8") as f:
+        with open("utils/about.html", "r", encoding="utf-8") as f:
             self.about_text.setHtml(f.read())
 
 if __name__ == "__main__":
