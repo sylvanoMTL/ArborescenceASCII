@@ -22,7 +22,8 @@ from PySide6.QtGui import QFont
 #     pyside6-uic mainwindow.ui -o ui_mainwindow.py, or
 
 from ui_mainwindow import Ui_MainWindow
-
+# from ui_about import Ui_AboutDialog
+from About_ArborescenceASCII import AboutDialog
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -37,10 +38,18 @@ class MainWindow(QMainWindow):
         self.ui.generateTree_btn.clicked.connect(self.generate_tree_structure)
         self.ui.generateTree_btn.setEnabled(False)
 
+        self.ui.input_path_display.setPlaceholderText("No folder selected")
         self.ui.input_path_display.editingFinished.connect(self.check_manual_folder_input)
 
-
         self.update_generate_button_state()
+
+        self.ui.actionAbout.triggered.connect(self.show_about)
+
+        self.ui.copy_btn.clicked.connect(self.copy_preview_text)
+
+
+    def default_connect_action(self):
+        print("default action")
     
     def browse_input_folder(self):
         """Open dialog to select input folder"""
@@ -173,6 +182,16 @@ class MainWindow(QMainWindow):
                 f"An error occurred while generating the tree structure:\n{str(e)}"
             )
 
+
+    def copy_preview_text(self):
+        text = self.ui.preview_text.toPlainText()   # QTextEdit
+        # or .text() if it's a QLineEdit / QLabel
+        QApplication.clipboard().setText(text)
+
+    def show_about(self):
+        dlg = AboutDialog(self)
+        dlg.exec()   # blocks until closed (modal dialog)
+        # alternatively: dlg.show()  # non-blocking (modeless)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
