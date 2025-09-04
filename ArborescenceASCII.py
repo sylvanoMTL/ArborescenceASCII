@@ -15,9 +15,9 @@ from PySide6.QtGui import QFont
 
 from ui_mainwindow import Ui_MainWindow
 from About_ArborescenceASCII import AboutDialog
-from filedetails import FileDetailsWindow
+from filedetails import FileDetailsDialog
 from tree_generator import TreeGenerator
-
+from maxLengthDialog import maxLengthDialog
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -28,6 +28,9 @@ class MainWindow(QMainWindow):
         # Initialize input_folder attribute and tree generator
         self.input_folder = ""
         self.tree_generator = TreeGenerator()
+
+        # Configure preview text widget for proper formatting
+        self.setup_preview_text()
 
         self.ui.browse_btn.clicked.connect(self.browse_input_folder)
         self.ui.generateTree_btn.clicked.connect(self.generate_tree_structure)
@@ -40,10 +43,37 @@ class MainWindow(QMainWindow):
 
         self.ui.actionAbout.triggered.connect(self.show_about)
         self.ui.actionDetails.triggered.connect(self.show_details)
+        self.ui.actionFilenameMaxLength.triggered.connect(self.configure_filename_length)
+        
         self.ui.copy_btn.clicked.connect(self.copy_preview_text)
 
-
         self.ui.preview_text.setEnabled(True)
+
+    def setup_preview_text(self):
+        """Configure preview text widget with monospaced font for proper alignment"""
+        # Set monospaced font for proper tabular formatting
+        font = QFont("Consolas", 9)  # Windows
+        if not font.exactMatch():
+            font = QFont("Monaco", 9)  # macOS
+        if not font.exactMatch():
+            font = QFont("Liberation Mono", 9)  # Linux
+        if not font.exactMatch():
+            font = QFont("Courier New", 9)  # Fallback
+        
+        font.setFixedPitch(True)
+        self.ui.preview_text.setFont(font)
+        
+        # Set some styling for better readability
+        self.ui.preview_text.setStyleSheet("""
+            QTextEdit {
+                background-color: #f8f9fa;
+                border: 1px solid #dee2e6;
+                font-family: 'Consolas', 'Monaco', 'Liberation Mono', 'Courier New', monospace;
+            }
+        """)
+        
+        # Disable word wrapping to preserve formatting
+        self.ui.preview_text.setLineWrapMode(QTextEdit.NoWrap)
 
     def default_connect_action(self):
         print("default action")
@@ -131,9 +161,36 @@ class MainWindow(QMainWindow):
         dlg.exec()
 
     def show_details(self):
-        window = FileDetailsWindow("file_details.toml")
-        window.show()
+        dlg = FileDetailsDialog("file_details.toml")
+        # dlg.show()
+        dlg.exec()
+
+    def configure_filename_length(self):
+        """Allow user to configure maximum filename length"""
+        current_length = self.tree_generator.get_max_filename_length()
         
+        # Use custom dialog
+        dlg = maxLengthDialog(self, current_length)
+        result = dlg.exec()
+        print(result)
+        if result == True:
+            new_length = dlg.get_max_length()
+            
+            if new_length != current_length:
+                self.tree_generator.set_max_filename_length(new_length)
+                self.ui.status_label.setText(f"Filename length set to {new_length} characters")
+                self.ui.status_label.setStyleSheet("color: blue; font-style: italic;")
+                
+                # If there's already a tree generated, suggest regenerating
+                if self.ui.preview_text.toPlainText().strip():
+                    reply = QMessageBox.question(
+                        self, 
+                        "Regenerate Tree?", 
+                        "Settings changed. Regenerate tree with new filename length?",
+                        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+                    )
+                    if reply == QMessageBox.StandardButton.Yes:
+                        self.generate_tree_structure()
 
 
 if __name__ == "__main__":

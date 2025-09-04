@@ -144,6 +144,7 @@
      <string>Preferences</string>
     </property>
     <addaction name="actionDetails"/>
+    <addaction name="actionFilenameMaxLength"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -156,7 +157,7 @@
   </widget>
   <action name="actionAbout">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>About</string>
@@ -165,6 +166,11 @@
   <action name="actionDetails">
    <property name="text">
     <string>Details</string>
+   </property>
+  </action>
+  <action name="actionFilenameMaxLength">
+   <property name="text">
+    <string>File name Maximum Length</string>
    </property>
   </action>
  </widget>
