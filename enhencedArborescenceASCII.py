@@ -42,9 +42,6 @@ class MainWindow(QMainWindow):
         self.ui.actionDetails.triggered.connect(self.show_details)
         self.ui.copy_btn.clicked.connect(self.copy_preview_text)
 
-
-        self.ui.preview_text.setEnabled(True)
-
     def default_connect_action(self):
         print("default action")
     
@@ -133,7 +130,6 @@ class MainWindow(QMainWindow):
     def show_details(self):
         window = FileDetailsWindow("file_details.toml")
         window.show()
-        
 
 
 if __name__ == "__main__":

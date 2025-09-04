@@ -1,0 +1,40 @@
+[common]
+Name = true
+Size = true
+Type = true
+DateCreated = false
+DateModified = false
+DateAccessed = false
+
+[media]
+Dimensions = false
+Width = false
+Height = false
+Duration = false
+Bitrate = false
+FrameRate = false
+SampleRate = false
+Channels = false
+
+[documents]
+Authors = false
+Title = false
+Subject = false
+Tags = false
+Comments = false
+
+[system]
+Attributes = false
+Owner = false
+SharedWith = false
+Status = false
+Availability = false
+
+[advanced]
+CameraModel = false
+CameraMake = false
+FNumber = false
+ExposureTime = false
+ISO = false
+GPSLatitude = false
+GPSLongitude = false
