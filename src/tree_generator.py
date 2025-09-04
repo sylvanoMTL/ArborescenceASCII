@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class TreeGenerator:
-	def __init__(self, toml_file_path="file_details.toml", max_filename_length=180):
+	def __init__(self, toml_file_path="file_details.toml", max_filename_length=64):
 		self.toml_file_path = toml_file_path
 		self.max_filename_length = max_filename_length
 		self.config = self.load_config()
@@ -168,22 +168,22 @@ class TreeGenerator:
 		headers = []
 		
 		if self.config.get("common", {}).get("Name", True):
-			headers.append("NOM")
+			headers.append("NAME")
 		
 		if self.config.get("common", {}).get("Type", False):
 			headers.append("TYPE")
 		
 		if self.config.get("common", {}).get("Size", False):
-			headers.append("TAILLE")
+			headers.append("SIZE")
 		
 		if self.config.get("common", {}).get("DateModified", False):
-			headers.append("DATE MODIFICATION")
+			headers.append("MODIFIED")
 		
 		if self.config.get("common", {}).get("DateCreated", False):
-			headers.append("DATE CREATION")
+			headers.append("CREATED")
 		
 		if self.config.get("common", {}).get("DateAccessed", False):
-			headers.append("DATE ACCES")
+			headers.append("ACCESSED")
 		
 		if len(headers) > 1:
 			# Calculate spacing for filename column

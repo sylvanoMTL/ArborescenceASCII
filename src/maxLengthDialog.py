@@ -9,7 +9,7 @@ from ui_maxlength import Ui_maxLengthDialog
 
 
 class maxLengthDialog(QDialog, Ui_maxLengthDialog):
-	def __init__(self, parent=None, current_value=180):
+	def __init__(self, parent=None, current_value=64):
 		super().__init__(parent)
 		self.setupUi(self)
 		
@@ -35,7 +35,7 @@ class maxLengthDialog(QDialog, Ui_maxLengthDialog):
 		try:
 			return int(self.max_length.text())
 		except ValueError:
-			return 180  # Default fallback
+			return 64  # Default fallback
 	
 	def set_max_length(self, value):
 		"""Set the maximum length value"""
@@ -44,7 +44,7 @@ class maxLengthDialog(QDialog, Ui_maxLengthDialog):
 
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
-	dlg = maxLengthDialog(current_value=180)
+	dlg = maxLengthDialog(current_value=64)
 	result = dlg.exec()   # modal (blocks until closed)
 	
 	if result == QDialog.Accepted:

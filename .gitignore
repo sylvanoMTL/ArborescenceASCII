@@ -12,3 +12,13 @@ venv.bak/
 __pycache__/
 *.py[cod]
 *$py.class
+
+
+# ===============================
+# Nuitka build artifacts
+# ===============================
+
+# Build folders
+build/
+dist/
+*.build/

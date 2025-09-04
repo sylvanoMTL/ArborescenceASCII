@@ -2,9 +2,9 @@
 Name = true
 Size = true
 Type = true
-DateCreated = true
-DateModified = true
-DateAccessed = true
+DateCreated = false
+DateModified = false
+DateAccessed = false
 
 [media]
 Dimensions = false
