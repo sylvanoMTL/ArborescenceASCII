@@ -53,16 +53,40 @@ class MainWindow(QMainWindow):
 
         self.ui.preview_text.setEnabled(True)
 
+    # def get_resource_path(self, *path_parts):
+    #     """Get the correct path for resources, works for both script and compiled executable"""
+    #     if getattr(sys, 'frozen', False):
+    #         # Running as compiled executable
+    #         base_path = os.path.dirname(sys.executable)
+    #     else:
+    #         # Running as script - go up from src to project root
+    #         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        
+    #     return os.path.join(base_path, *path_parts)
+
+
     def get_resource_path(self, *path_parts):
         """Get the correct path for resources, works for both script and compiled executable"""
         if getattr(sys, 'frozen', False):
-            # Running as compiled executable
-            base_path = os.path.dirname(sys.executable)
+            # Running as compiled executable - try multiple possible locations
+            base_paths = [
+                os.path.dirname(sys.executable),  # Same directory as executable
+                os.getcwd(),  # Current working directory
+                os.path.join(os.path.dirname(sys.executable), "..")  # Parent directory
+            ]
+            
+            # Try each possible base path until we find the file
+            for base_path in base_paths:
+                full_path = os.path.join(base_path, *path_parts)
+                if os.path.exists(full_path):
+                    return full_path
+            
+            # If not found, return the first attempt (for better error messages)
+            return os.path.join(base_paths[0], *path_parts)
         else:
             # Running as script - go up from src to project root
             base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        
-        return os.path.join(base_path, *path_parts)
+            return os.path.join(base_path, *path_parts)
 
     def setup_preview_text(self):
         """Configure preview text widget with monospaced font for proper alignment"""
