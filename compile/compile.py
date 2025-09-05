@@ -27,9 +27,12 @@ def main():
         str(main_script),
         "--standalone",
         "--enable-plugin=pyside6",
-        
+        #"--windows-disable-console", # for Windows
         # Include entire utils directory - this is the key change
         f"--include-data-dir={utils_dir}=utils",
+
+        #include icon
+        "--windows-icon-from-ico=graphics/icon.ico",
         
         # Output settings
         # "--output-dir=dist",
@@ -39,6 +42,7 @@ def main():
         "--enable-plugin=anti-bloat",
         "--disable-plugin=tk-inter"
     ]
+    
     
     print("📄 Command:")
     print(" ".join(cmd))

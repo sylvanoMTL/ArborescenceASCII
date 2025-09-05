@@ -4,14 +4,17 @@ import sys
 from PySide6.QtWidgets import QDialog, QApplication
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIntValidator
+from PySide6.QtGui import QIcon
 
 from ui_maxlength import Ui_maxLengthDialog
-
+from getResourcePath import get_resource_path
 
 class maxLengthDialog(QDialog, Ui_maxLengthDialog):
 	def __init__(self, parent=None, current_value=64):
 		super().__init__(parent)
 		self.setupUi(self)
+		icon =  get_resource_path("graphics","icon.svg")
+		self.setWindowIcon(QIcon(icon))
 		
 		# Set window title
 		self.setWindowTitle("Configure Maximum Filename Length")

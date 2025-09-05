@@ -7,18 +7,24 @@ OutputBaseFilename=ArborescenceASCII_Installer
 Compression=lzma
 SolidCompression=yes
 
+
 [Files]
 ; Copy everything from Nuitka dist folder into the program folder
 Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\ArborescenceASCII.dist\*"; \
     DestDir: "{app}"; \
     Flags: recursesubdirs createallsubdirs ignoreversion
 
-
-
 ; Copy the TOML config file into {app}\utils
 Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\utils\file_details.toml"; \
-    DestDir: "{app}\utils"; \
-    Flags: ignoreversion
+    DestDir: "{app}\utils"; Flags: ignoreversion
+
+; Copy about.html into {app}\utils
+Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\utils\about.html"; \
+    DestDir: "{app}\utils"; Flags: ignoreversion
+
+; Copy icon.ico into {app}\graphics
+Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\graphics\icon.ico"; \
+    DestDir: "{app}\graphics"; Flags: ignoreversion
 
 
     

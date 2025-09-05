@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout,
                                QHBoxLayout, QWidget, QPushButton, QLabel, 
                                QLineEdit, QFileDialog, QMessageBox, QTextEdit, QDialog)
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont,QIcon
 
 from ui_mainwindow import Ui_MainWindow
 from About_ArborescenceASCII import AboutDialog
@@ -26,12 +26,14 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        icon =  get_resource_path("graphics","icon.svg")
+        self.setWindowIcon(QIcon(icon))
 
         # Initialize input_folder attribute and tree generator
         self.input_folder = ""
         
         # Get the correct path for file_details.toml
-        self.toml_path = get_resource_path("utils", "file_details.toml")
+        self.toml_path = get_resource_path("user_data", "file_details.toml")
         self.tree_generator = TreeGenerator(self.toml_path)
 
         # Configure preview text widget for proper formatting
@@ -261,7 +263,7 @@ class MainWindow(QMainWindow):
                         self.generate_tree_structure()
 
     def printResourcePath(self):
-        print(get_resource_path("utils", "file_details.toml"))
+        print(get_resource_path("user_data", "file_details.toml"))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

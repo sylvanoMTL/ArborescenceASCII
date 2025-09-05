@@ -17,7 +17,6 @@ def get_resource_path(*path_parts):
 
 
 # Usage
-# toml_path = get_resource_path("utils", "file_details.toml")
 if __name__ == "__main__":
-    # print(get_resource_path("utils", "file_details.toml"))
+    # print(get_resource_path("user_data", "file_details.toml"))
     print(get_resource_path())

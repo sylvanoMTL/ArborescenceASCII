@@ -4,14 +4,17 @@ from PySide6.QtWidgets import (
     QApplication, QDialog, QWidget,QVBoxLayout, QGroupBox,
     QCheckBox, QScrollArea, QPushButton, QHBoxLayout
 )
-
+from PySide6.QtGui import QIcon
+from getResourcePath import get_resource_path
 
 class FileDetailsDialog(QDialog):
     def __init__(self, toml_file):
         super().__init__()
         self.setWindowTitle("File Details Selection")
         self.resize(450, 550)
-
+        icon =  get_resource_path("graphics","icon.svg")
+        self.setWindowIcon(QIcon(icon))
+       
         self.toml_file = toml_file
         self.data = toml.load(self.toml_file)
 
@@ -105,6 +108,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # Create a modal dialog
-    dialog = FileDetailsDialog("file_details.toml")
+    dialog = FileDetailsDialog("user_data/file_details.toml")
     dialog.setModal(True)  # Make it modal
     dialog.exec()  # Blocks until closed
