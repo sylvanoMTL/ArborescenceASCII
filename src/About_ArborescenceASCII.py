@@ -4,7 +4,7 @@ import sys
 from PySide6.QtWidgets import QDialog, QApplication
 
 from ui_about import Ui_AboutDialog
-
+from getResourcePath import get_resource_path
 
 class AboutDialog(QDialog, Ui_AboutDialog):
     def __init__(self, parent=None):
@@ -12,20 +12,11 @@ class AboutDialog(QDialog, Ui_AboutDialog):
         self.setupUi(self)
 
         # Robust path handling for about.html
-        try:
-            # Get the directory where the executable/script is located
-            if getattr(sys, 'frozen', False):
-                # Running as compiled executable
-                base_path = os.path.dirname(sys.executable)
-            else:
-                # Running as script - go up from src to project root
-                base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            
-            about_file = os.path.join(base_path, "utils", "about.html")
-            
+        try:           
+            about_file = get_resource_path("utils", "about.html")
             with open(about_file, "r", encoding="utf-8") as f:
                 self.about_text.setHtml(f.read())
-                
+
         except FileNotFoundError:
             # Fallback content if file not found
             self.about_text.setHtml("""

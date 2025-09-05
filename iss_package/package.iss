@@ -1,4 +1,4 @@
-<[Setup]
+[Setup]
 AppName=ArborescenceASCII
 AppVersion=0.1
 DefaultDirName={pf}\ArborescenceASCII
