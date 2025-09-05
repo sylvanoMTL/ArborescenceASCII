@@ -16,15 +16,10 @@ def main():
         print(f"❌ Main script not found: {main_script}")
         return False
     
-    # Check if required data files exist
+    # Check data files
     utils_dir = project_root / "utils"
     about_html = utils_dir / "about.html"
     file_details_toml = utils_dir / "file_details.toml"
-    
-    if not about_html.exists():
-        print(f"⚠️  Warning: about.html not found at {about_html}")
-    if not file_details_toml.exists():
-        print(f"⚠️  Warning: file_details.toml not found at {file_details_toml}")
     
     # Nuitka command
     cmd = [
@@ -32,13 +27,8 @@ def main():
         str(main_script),
         "--standalone",
         "--enable-plugin=pyside6",
-        # "--disable-console",
         
-        # Include data files only if they exist
-        f"--include-data-files={about_html}=utils/about.html",
-        f"--include-data-files={file_details_toml}=utils/file_details.toml",
-        
-        # Include entire utils directory to be safe
+        # Include entire utils directory - this is the key change
         f"--include-data-dir={utils_dir}=utils",
         
         # Output settings
@@ -54,13 +44,6 @@ def main():
     print(" ".join(cmd))
     print()
     
-    # Show project structure
-    print("📁 Project structure:")
-    print(f"   Source: {main_script}")
-    print(f"   Utils: {utils_dir}")
-    print(f"   Output: {project_root}/dist/")
-    print()
-    
     # Run compilation
     print("🚀 Starting compilation...")
     result = subprocess.run(cmd, cwd=project_root)
@@ -69,17 +52,15 @@ def main():
         print("✅ Compilation successful!")
         print(f"📦 Output: {project_root}/dist/")
         
-        # Check if executable was created
-        dist_dir = project_root / "dist"
-        exe_files = list(dist_dir.glob("**/ArborescenceASCII*"))
-        if exe_files:
-            print(f"🎯 Executable: {exe_files[0]}")
+        # Check if utils directory was copied correctly
+        dist_utils = project_root / "dist" / "ArborescenceASCII.dist" / "utils"
+        if dist_utils.exists():
+            print(f"✅ Utils directory found at: {dist_utils}")
+        else:
+            print("⚠️  Utils directory not found in expected location")
+            
     else:
         print("❌ Compilation failed!")
-        print("💡 Common fixes:")
-        print("   - Ensure Nuitka is installed: pip install nuitka")
-        print("   - Check that PySide6 is installed: pip install pyside6")
-        print("   - Verify all imports in your Python files")
     
     return result.returncode == 0
 
