@@ -15,7 +15,7 @@ from PySide6.QtGui import QFont,QIcon
 
 from ui_mainwindow import Ui_MainWindow
 from About_ArborescenceASCII import AboutDialog
-from filedetailsV2 import FileDetailsDialog      #temporary change prapratory for APPDATA
+from filedetails import FileDetailsDialog     
 from tree_generator import TreeGenerator
 from maxLengthDialog import maxLengthDialog
 

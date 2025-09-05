@@ -1,28 +1,28 @@
 import sys
 import toml
 from PySide6.QtWidgets import (
-    QApplication, QDialog, QWidget,QVBoxLayout, QGroupBox,
+    QApplication, QDialog, QWidget, QVBoxLayout, QGroupBox,
     QCheckBox, QScrollArea, QPushButton, QHBoxLayout
 )
 from PySide6.QtGui import QIcon
 from getResourcePath import get_resource_path
+from user_config import get_user_toml
 
 class FileDetailsDialog(QDialog):
     def __init__(self, toml_file):
         super().__init__()
         self.setWindowTitle("File Details Selection")
         self.resize(450, 550)
-        icon =  get_resource_path("graphics","icon.ico")
+
+        icon = get_resource_path("graphics", "icon.ico")
         self.setWindowIcon(QIcon(icon))
-       
+
         self.toml_file = toml_file
         self.data = toml.load(self.toml_file)
 
-        # Store initial state snapshot for reset
         import copy
         self.initial_data = copy.deepcopy(self.data)
-
-        self.checkboxes = {}  # Store checkboxes for easy access
+        self.checkboxes = {}
 
         main_layout = QVBoxLayout(self)
 
@@ -48,7 +48,7 @@ class FileDetailsDialog(QDialog):
         container = QWidget()
         container_layout = QVBoxLayout(container)
 
-        # Create checkboxes grouped by category
+        # Checkboxes grouped by category
         for category, items in self.data.items():
             group_box = QGroupBox(category.capitalize())
             group_layout = QVBoxLayout()
@@ -78,27 +78,17 @@ class FileDetailsDialog(QDialog):
         with open(self.toml_file, "w", encoding="utf-8") as f:
             toml.dump(self.data, f)
 
-    # Buttons
     def select_all(self):
-        for category, items in self.checkboxes.items():
+        for items in self.checkboxes.values():
             for checkbox in items.values():
                 checkbox.setChecked(True)
 
     def unselect_all(self):
-        for category, items in self.checkboxes.items():
+        for items in self.checkboxes.values():
             for checkbox in items.values():
                 checkbox.setChecked(False)
 
-    # def reset_all(self):
-    #     # Reset to original values from TOML
-    #     self.data = toml.load(self.toml_file)
-    #     for category, items in self.checkboxes.items():
-    #         for item, checkbox in items.items():
-    #             checkbox.setChecked(self.data[category][item])
-
-
     def reset_all(self):
-        # Reset to the state when the dialog was opened
         for category, items in self.checkboxes.items():
             for item, checkbox in items.items():
                 checkbox.setChecked(self.initial_data[category][item])
@@ -107,7 +97,7 @@ class FileDetailsDialog(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # Create a modal dialog
-    dialog = FileDetailsDialog("user_data/file_details.toml")
-    dialog.setModal(True)  # Make it modal
-    dialog.exec()  # Blocks until closed
+    toml_file = get_user_toml()
+    dialog = FileDetailsDialog(toml_file)
+    dialog.setModal(True)
+    dialog.exec()
