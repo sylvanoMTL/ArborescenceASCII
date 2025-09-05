@@ -32,7 +32,7 @@ def main():
         str(main_script),
         "--standalone",
         "--enable-plugin=pyside6",
-        "--disable-console",
+        # "--disable-console",
         
         # Include data files only if they exist
         f"--include-data-files={about_html}=utils/about.html",
