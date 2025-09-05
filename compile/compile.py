@@ -32,7 +32,7 @@ def main():
         f"--include-data-dir={utils_dir}=utils",
         
         # Output settings
-        "--output-dir=dist",
+        # "--output-dir=dist",
         "--output-filename=ArborescenceASCII",
         
         # Performance optimizations

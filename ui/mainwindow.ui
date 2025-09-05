@@ -151,6 +151,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionDisplay_Resource_Path"/>
    </widget>
    <addaction name="menuPrefe"/>
    <addaction name="menuHelp"/>
@@ -171,6 +172,11 @@
   <action name="actionFilenameMaxLength">
    <property name="text">
     <string>File name Maximum Length</string>
+   </property>
+  </action>
+  <action name="actionDisplay_Resource_Path">
+   <property name="text">
+    <string>Display Resource Path</string>
    </property>
   </action>
  </widget>

@@ -19,6 +19,7 @@ from filedetails import FileDetailsDialog
 from tree_generator import TreeGenerator
 from maxLengthDialog import maxLengthDialog
 
+from getResourcePath import get_resource_path
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -53,6 +54,8 @@ class MainWindow(QMainWindow):
 
         self.ui.preview_text.setEnabled(True)
 
+        self.ui.actionDisplay_Resource_Path.triggered.connect(self.printResourcePath)
+
     # def get_resource_path(self, *path_parts):
     #     """Get the correct path for resources, works for both script and compiled executable"""
     #     if getattr(sys, 'frozen', False):
@@ -65,28 +68,52 @@ class MainWindow(QMainWindow):
     #     return os.path.join(base_path, *path_parts)
 
 
+    # def get_resource_path(self, *path_parts):
+    #     """Get the correct path for resources, works for both script and compiled executable"""
+    #     if getattr(sys, 'frozen', False):
+    #         # Running as compiled executable - try multiple possible locations
+    #         base_paths = [
+    #             os.path.dirname(sys.executable),  # Same directory as executable
+    #             os.getcwd(),  # Current working directory
+    #             os.path.join(os.path.dirname(sys.executable), "..")  # Parent directory
+    #         ]
+            
+    #         # Try each possible base path until we find the file
+    #         for base_path in base_paths:
+    #             full_path = os.path.join(base_path, *path_parts)
+    #             if os.path.exists(full_path):
+    #                 return full_path
+            
+    #         # If not found, return the first attempt (for better error messages)
+    #         return os.path.join(base_paths[0], *path_parts)
+    #     else:
+    #         # Running as script - go up from src to project root
+    #         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    #         return os.path.join(base_path, *path_parts)
+
     def get_resource_path(self, *path_parts):
         """Get the correct path for resources, works for both script and compiled executable"""
         if getattr(sys, 'frozen', False):
-            # Running as compiled executable - try multiple possible locations
-            base_paths = [
-                os.path.dirname(sys.executable),  # Same directory as executable
-                os.getcwd(),  # Current working directory
-                os.path.join(os.path.dirname(sys.executable), "..")  # Parent directory
-            ]
-            
-            # Try each possible base path until we find the file
-            for base_path in base_paths:
-                full_path = os.path.join(base_path, *path_parts)
+            # Nuitka standalone puts data inside the .dist folder (same as executable)
+            base_path = os.path.dirname(sys.executable)
+            dist_path = os.path.join(base_path, os.path.splitext(os.path.basename(sys.executable))[0] + ".dist")
+
+            # Try the exe folder first, then the .dist folder
+            candidates = [base_path, dist_path]
+
+            for candidate in candidates:
+                full_path = os.path.join(candidate, *path_parts)
                 if os.path.exists(full_path):
                     return full_path
-            
-            # If not found, return the first attempt (for better error messages)
-            return os.path.join(base_paths[0], *path_parts)
+
+            # fallback: still return something for debugging
+            return os.path.join(base_path, *path_parts)
+
         else:
             # Running as script - go up from src to project root
             base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             return os.path.join(base_path, *path_parts)
+
 
     def setup_preview_text(self):
         """Configure preview text widget with monospaced font for proper alignment"""
@@ -231,6 +258,8 @@ class MainWindow(QMainWindow):
                     if reply == QMessageBox.StandardButton.Yes:
                         self.generate_tree_structure()
 
+    def printResourcePath(self):
+        print(get_resource_path("utils", "file_details.toml"))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

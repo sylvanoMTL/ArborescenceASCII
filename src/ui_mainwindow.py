@@ -33,6 +33,8 @@ class Ui_MainWindow(object):
         self.actionDetails.setObjectName(u"actionDetails")
         self.actionFilenameMaxLength = QAction(MainWindow)
         self.actionFilenameMaxLength.setObjectName(u"actionFilenameMaxLength")
+        self.actionDisplay_Resource_Path = QAction(MainWindow)
+        self.actionDisplay_Resource_Path.setObjectName(u"actionDisplay_Resource_Path")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -112,6 +114,7 @@ class Ui_MainWindow(object):
         self.menuPrefe.addAction(self.actionDetails)
         self.menuPrefe.addAction(self.actionFilenameMaxLength)
         self.menuHelp.addAction(self.actionAbout)
+        self.menuHelp.addAction(self.actionDisplay_Resource_Path)
 
         self.retranslateUi(MainWindow)
 
@@ -123,6 +126,7 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.actionDetails.setText(QCoreApplication.translate("MainWindow", u"Details", None))
         self.actionFilenameMaxLength.setText(QCoreApplication.translate("MainWindow", u"File name Maximum Length", None))
+        self.actionDisplay_Resource_Path.setText(QCoreApplication.translate("MainWindow", u"Display Resource Path", None))
         self.browse_btn.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
         self.generateTree_btn.setText(QCoreApplication.translate("MainWindow", u"Generate Tree", None))
         self.status_label.setText(QCoreApplication.translate("MainWindow", u"Status", None))

@@ -30,14 +30,46 @@ class TreeGenerator:
 		return self.max_filename_length
 	
 	def load_config(self):
-		"""Load TOML configuration for file details"""
+		"""Load TOML configuration for file details with fallback"""
+		default_config = {
+			"common": {
+				"Name": True, 
+				"Size": True, 
+				"Type": True, 
+				"DateCreated": False,
+				"DateModified": True, 
+				"DateAccessed": False
+			},
+			"media": {},
+			"documents": {},
+			"system": {},
+			"advanced": {}
+		}
+
 		try:
-			with open(self.toml_file_path, "r", encoding="utf-8") as f:
-				return toml.load(f)
-		except FileNotFoundError:
-			return {
-				"common": {"Name": True, "Size": True, "Type": True, "DateModified": True}
-			}
+			if os.path.exists(self.toml_file_path):
+				with open(self.toml_file_path, "r", encoding="utf-8") as f:
+					return toml.load(f)
+				
+			else:
+				print(f"TOML config not found at {self.toml_file_path}, using defaults")
+            
+				# Try to create the config file with defaults if directory exists
+				config_dir = os.path.dirname(self.toml_file_path)
+				if os.path.exists(config_dir):
+					try:
+						with open(self.toml_file_path, "w", encoding="utf-8") as f:
+							toml.dump(default_config, f)
+						print(f"Created default config at {self.toml_file_path}")
+					except Exception as e:
+						print(f"Could not create config file: {e}")
+				
+				return default_config
+		except Exception as e:
+			print(f"Error loading TOML config: {e}, using defaults")
+			return default_config
+			
+
 	
 	def reload_config(self):
 		"""Reload configuration from TOML file"""
