@@ -15,11 +15,12 @@ from PySide6.QtGui import QFont,QIcon
 
 from ui_mainwindow import Ui_MainWindow
 from About_ArborescenceASCII import AboutDialog
-from filedetails import FileDetailsDialog
+from filedetailsV2 import FileDetailsDialog      #temporary change prapratory for APPDATA
 from tree_generator import TreeGenerator
 from maxLengthDialog import maxLengthDialog
 
 from getResourcePath import get_resource_path
+from user_config import get_user_toml
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -33,7 +34,7 @@ class MainWindow(QMainWindow):
         self.input_folder = ""
         
         # Get the correct path for file_details.toml
-        self.toml_path = get_resource_path("user_data", "file_details.toml")
+        self.toml_path = get_user_toml()
         self.tree_generator = TreeGenerator(self.toml_path)
 
         # Configure preview text widget for proper formatting
@@ -263,7 +264,8 @@ class MainWindow(QMainWindow):
                         self.generate_tree_structure()
 
     def printResourcePath(self):
-        print(get_resource_path("user_data", "file_details.toml"))
+        # print(get_resource_path("user_data", "file_details.toml"))
+        print(get_user_toml())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

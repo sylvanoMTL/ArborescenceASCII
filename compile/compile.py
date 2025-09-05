@@ -28,7 +28,7 @@ def main():
         str(main_script),
         "--standalone",
         "--enable-plugin=pyside6",
-        #"--windows-disable-console", # for Windows
+        "--windows-disable-console", # for Windows
         # Include entire utils directory - this is the key change
         f"--include-data-dir={utils_dir}=utils",
         f"--include-data-dir={user_data_dir}=user_data",

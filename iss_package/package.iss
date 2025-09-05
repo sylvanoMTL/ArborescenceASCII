@@ -1,4 +1,4 @@
-[Setup]
+<[Setup]
 AppName=ArborescenceASCII
 AppVersion=0.1
 DefaultDirName={pf}\ArborescenceASCII
@@ -14,7 +14,7 @@ Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\ArborescenceASCII.dist\*"
     DestDir: "{app}"; \
     Flags: recursesubdirs createallsubdirs ignoreversion
 
-; Copy the TOML config file into {app}\utils
+; Copy the TOML config file into {app}\user_data
 Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\user_data\file_details.toml"; \
     DestDir: "{app}\user_data"; Flags: ignoreversion
 

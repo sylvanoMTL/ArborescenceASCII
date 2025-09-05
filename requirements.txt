@@ -1,4 +1,6 @@
 pyside6
 toml
 nuitka
-cairosvg
+appdirs
+
+# cairosvg

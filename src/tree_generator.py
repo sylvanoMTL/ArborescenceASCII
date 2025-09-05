@@ -42,7 +42,8 @@ class TreeGenerator:
 		}
 
 		try:
-			print("trying to load file_detail.toml Location: "+ self.toml_file_path)
+			# print("trying to load file_detail.toml Location: "+ self.toml_file_path)
+			print("trying to load file_detail.toml Location: " + str(self.toml_file_path))
 			if os.path.exists(self.toml_file_path):
 				with open(self.toml_file_path, "r", encoding="utf-8") as f:
 					return toml.load(f)

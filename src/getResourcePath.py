@@ -1,5 +1,5 @@
 import os, sys
-
+# from pathlib import Path
 
 def get_resource_path(*path_parts):
     """Return absolute path to resource, works with Nuitka + Inno installer."""
@@ -16,7 +16,15 @@ def get_resource_path(*path_parts):
     return fallback_path
 
 
+
 # Usage
 if __name__ == "__main__":
     # print(get_resource_path("user_data", "file_details.toml"))
     print(get_resource_path())
+
+
+
+
+
+
+
