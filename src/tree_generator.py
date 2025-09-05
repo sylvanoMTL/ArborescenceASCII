@@ -10,7 +10,7 @@ class TreeGenerator:
 		# Set default path if none provided
 		if toml_file_path is None:
 			toml_file_path = get_resource_path("utils", "file_details.toml")
-					
+
 		self.toml_file_path = toml_file_path
 		self.max_filename_length = max_filename_length
 		self.config = self.load_config()
@@ -42,8 +42,7 @@ class TreeGenerator:
 		}
 
 		try:
-			print("trying to load file_detail.toml\n Location: ")
-			print(self.toml_file_path)
+			print("trying to load file_detail.toml Location: "+ self.toml_file_path)
 			if os.path.exists(self.toml_file_path):
 				with open(self.toml_file_path, "r", encoding="utf-8") as f:
 					return toml.load(f)
