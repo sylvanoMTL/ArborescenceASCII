@@ -13,7 +13,7 @@ class maxLengthDialog(QDialog, Ui_maxLengthDialog):
 	def __init__(self, parent=None, current_value=64):
 		super().__init__(parent)
 		self.setupUi(self)
-		icon =  get_resource_path("graphics","icon.svg")
+		icon =  get_resource_path("graphics","icon.ico")
 		self.setWindowIcon(QIcon(icon))
 		
 		# Set window title

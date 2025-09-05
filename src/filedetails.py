@@ -12,7 +12,7 @@ class FileDetailsDialog(QDialog):
         super().__init__()
         self.setWindowTitle("File Details Selection")
         self.resize(450, 550)
-        icon =  get_resource_path("graphics","icon.svg")
+        icon =  get_resource_path("graphics","icon.ico")
         self.setWindowIcon(QIcon(icon))
        
         self.toml_file = toml_file

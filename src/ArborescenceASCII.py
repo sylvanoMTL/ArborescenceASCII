@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        icon =  get_resource_path("graphics","icon.svg")
+        icon =  get_resource_path("graphics","icon.ico")
         self.setWindowIcon(QIcon(icon))
 
         # Initialize input_folder attribute and tree generator

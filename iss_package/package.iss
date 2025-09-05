@@ -15,8 +15,8 @@ Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\ArborescenceASCII.dist\*"
     Flags: recursesubdirs createallsubdirs ignoreversion
 
 ; Copy the TOML config file into {app}\utils
-Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\utils\file_details.toml"; \
-    DestDir: "{app}\utils"; Flags: ignoreversion
+Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\user_data\file_details.toml"; \
+    DestDir: "{app}\user_data"; Flags: ignoreversion
 
 ; Copy about.html into {app}\utils
 Source: "C:\PythonProgrammingSylvain\ArborescenceASCII\utils\about.html"; \
