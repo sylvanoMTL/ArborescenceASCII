@@ -10,6 +10,7 @@ class AboutDialog(QDialog, Ui_AboutDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.resize(450, 800)
 
         # Robust path handling for about.html
         try:           
