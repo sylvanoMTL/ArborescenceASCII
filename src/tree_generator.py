@@ -3,19 +3,14 @@ import sys
 import toml
 from datetime import datetime
 
+from getResourcePath import get_resource_path
 
 class TreeGenerator:
 	def __init__(self, toml_file_path=None, max_filename_length=64):
 		# Set default path if none provided
 		if toml_file_path is None:
-			if getattr(sys, 'frozen', False):
-				# Running as compiled executable
-				base_path = os.path.dirname(sys.executable)
-			else:
-				# Running as script - go up from src to project root
-				base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-			toml_file_path = os.path.join(base_path, "utils", "file_details.toml")
-		
+			toml_file_path = get_resource_path("utils", "file_details.toml")
+					
 		self.toml_file_path = toml_file_path
 		self.max_filename_length = max_filename_length
 		self.config = self.load_config()
@@ -47,6 +42,8 @@ class TreeGenerator:
 		}
 
 		try:
+			print("trying to load file_detail.toml\n Location: ")
+			print(self.toml_file_path)
 			if os.path.exists(self.toml_file_path):
 				with open(self.toml_file_path, "r", encoding="utf-8") as f:
 					return toml.load(f)

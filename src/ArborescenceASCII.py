@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         self.input_folder = ""
         
         # Get the correct path for file_details.toml
-        self.toml_path = self.get_resource_path("utils", "file_details.toml")
+        self.toml_path = get_resource_path("utils", "file_details.toml")
         self.tree_generator = TreeGenerator(self.toml_path)
 
         # Configure preview text widget for proper formatting
@@ -91,28 +91,30 @@ class MainWindow(QMainWindow):
     #         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     #         return os.path.join(base_path, *path_parts)
 
-    def get_resource_path(self, *path_parts):
-        """Get the correct path for resources, works for both script and compiled executable"""
-        if getattr(sys, 'frozen', False):
-            # Nuitka standalone puts data inside the .dist folder (same as executable)
-            base_path = os.path.dirname(sys.executable)
-            dist_path = os.path.join(base_path, os.path.splitext(os.path.basename(sys.executable))[0] + ".dist")
+    # def get_resource_path(self, *path_parts):
+    #     """Get the correct path for resources, works for both script and compiled executable"""
+    #     if getattr(sys, 'frozen', False):
+    #         # Nuitka standalone puts data inside the .dist folder (same as executable)
+    #         base_path = os.path.dirname(sys.executable)
+    #         dist_path = os.path.join(base_path, os.path.splitext(os.path.basename(sys.executable))[0] + ".dist")
 
-            # Try the exe folder first, then the .dist folder
-            candidates = [base_path, dist_path]
+    #         print("Base path: " + base_path)
+    #         print("dist path: " + dist_path)
+    #         # Try the exe folder first, then the .dist folder
+    #         candidates = [base_path, dist_path]
 
-            for candidate in candidates:
-                full_path = os.path.join(candidate, *path_parts)
-                if os.path.exists(full_path):
-                    return full_path
+    #         for candidate in candidates:
+    #             full_path = os.path.join(candidate, *path_parts)
+    #             if os.path.exists(full_path):
+    #                 return full_path
 
-            # fallback: still return something for debugging
-            return os.path.join(base_path, *path_parts)
+    #         # fallback: still return something for debugging
+    #         return os.path.join(base_path, *path_parts)
 
-        else:
-            # Running as script - go up from src to project root
-            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            return os.path.join(base_path, *path_parts)
+    #     else:
+    #         # Running as script - go up from src to project root
+    #         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    #         return os.path.join(base_path, *path_parts)
 
 
     def setup_preview_text(self):

@@ -1,21 +1,23 @@
-import os
-import sys
+import os, sys
+
 
 def get_resource_path(*path_parts):
-    """Return absolute path to resource, works with Nuitka --standalone."""
-    if getattr(sys, 'frozen', False):
-        # Nuitka standalone: resources go into <exename>.dist/
-        exe_dir = os.path.dirname(sys.executable)
-        dist_dir = os.path.join(exe_dir, os.path.splitext(os.path.basename(sys.executable))[0] + ".dist")
-        return os.path.join(dist_dir, *path_parts)
-    else:
-        # Normal Python run: relative to project root
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        return os.path.join(base_dir, *path_parts)
+    """Return absolute path to resource, works with Nuitka + Inno installer."""
+    exe_dir = os.path.dirname(sys.executable)
+    full_path = os.path.join(exe_dir, *path_parts)
+    if os.path.exists(full_path):
+        print(f"Frozen/Installed executable run, Using exe_dir path: {full_path}")
+        return full_path
+
+    # fallback: normal python run
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    fallback_path = os.path.join(base_dir, *path_parts)
+    print(f"Normal python run, Using fallback path: {fallback_path}")
+    return fallback_path
 
 
-def main():
-    print(get_resource_path("utils", "file_details.toml"))
-
+# Usage
+# toml_path = get_resource_path("utils", "file_details.toml")
 if __name__ == "__main__":
-   main()
+    # print(get_resource_path("utils", "file_details.toml"))
+    print(get_resource_path())

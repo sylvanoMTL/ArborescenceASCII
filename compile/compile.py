@@ -50,10 +50,10 @@ def main():
     
     if result.returncode == 0:
         print("✅ Compilation successful!")
-        print(f"📦 Output: {project_root}/dist/")
+        print(f"📦 Output: {project_root}/ArborescenceASCII.dist")
         
         # Check if utils directory was copied correctly
-        dist_utils = project_root / "dist" / "ArborescenceASCII.dist" / "utils"
+        dist_utils = project_root / "ArborescenceASCII.dist" / "utils"
         if dist_utils.exists():
             print(f"✅ Utils directory found at: {dist_utils}")
         else:
